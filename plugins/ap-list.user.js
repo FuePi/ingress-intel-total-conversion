@@ -1,7 +1,7 @@
 // ==UserScript==
 // @id             iitc-plugin-ap-list@xelio
 // @name           iitc: AP List
-// @version        0.4
+// @version        0.4.1
 // @namespace      https://github.com/breunigs/ingress-intel-total-conversion
 // @updateURL      https://raw.github.com/breunigs/ingress-intel-total-conversion/gh-pages/plugins/ap-list.user.js
 // @downloadURL    https://raw.github.com/breunigs/ingress-intel-total-conversion/gh-pages/plugins/ap-list.user.js
@@ -406,22 +406,24 @@ window.plugin.apList.getAttackApGain = function(d) {
 
 // Change display table to friendly portals
 window.plugin.apList.displayFriendly = function() {
-  plugin.apList.displaySide = plugin.apList.SIDE_FRIENDLY;
-  plugin.apList.changeDisplaySide(plugin.apList.displaySide);
+  plugin.apList.changeDisplaySide(plugin.apList.SIDE_FRIENDLY);
 }
 
 // Change display table to enemy portals
 window.plugin.apList.displayEnemy = function() {
-  plugin.apList.displaySide = plugin.apList.SIDE_ENEMY;
-  plugin.apList.changeDisplaySide(plugin.apList.displaySide);
+  plugin.apList.changeDisplaySide(plugin.apList.SIDE_ENEMY);
 }
 
 window.plugin.apList.changeDisplaySide = function(side) {
-  plugin.apList.updatePortalTable(side);
-  plugin.apList.toggleSideLabel(side);
-
-  var scrollTo = $("#ap-list").position().top + $("#ap-list").outerHeight() 
-                - $("#sidebar").height() + $("#sidebar").scrollTop()
+  var isChange = (plugin.apList.displaySide !== side);
+  var scrollTo = 0;
+  if(isChange) {
+    plugin.apList.displaySide = side;
+    plugin.apList.updatePortalTable(side);
+    plugin.apList.toggleSideLabel(side);
+    scrollTo = $("#ap-list").position().top + $("#ap-list").outerHeight()
+            - $("#sidebar").height() + $("#sidebar").scrollTop();
+  }
   $('#sidebar').scrollTop(scrollTo);
 }
 
